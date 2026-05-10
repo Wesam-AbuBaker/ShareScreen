@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head><meta charset="UTF-8"><title>شاشة المعلم</title></head>
+<body style="background:#000; color:white; text-align:center; padding-top:40vh; font-family:sans-serif;">
+<p>جارٍ الاتصال بشاشة المعلم...</p>
+<script>
+  const GAS_URL = "https://script.google.com/macros/s/XXXXX/exec";
+  const params = new URLSearchParams(location.search);
+  const lab = params.get('lab');
+  if (lab) {
+    fetch(`${GAS_URL}?lab=${encodeURIComponent(lab)}`)
+      .then(r => r.json())
+      .then(data => {
+        if (data.ip) {
+          window.location.href = `http://${data.ip}:8080/screen.html`;
+        } else {
+          document.body.innerHTML = "لم يتم العثور على عنوان IP. تأكد من تشغيل برنامج المعلم.";
+        }
+      })
+      .catch(() => {
+        document.body.innerHTML = "تعذر الاتصال بالوسيط. تحقق من الإنترنت.";
+      });
+  } else {
+    document.body.innerHTML = "معامل المختبر مفقود.";
+  }
+</script>
+</body>
+</html>
