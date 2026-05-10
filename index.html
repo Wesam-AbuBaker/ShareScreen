@@ -8,18 +8,8 @@
   const params = new URLSearchParams(location.search);
   const lab = params.get('lab');
   if (lab) {
-    fetch(`${GAS_URL}?lab=${encodeURIComponent(lab)}`)
-      .then(r => r.json())
-      .then(data => {
-        if (data.ip) {
-          window.location.href = `http://${data.ip}:8080/screen.html`;
-        } else {
-          document.body.innerHTML = "لم يتم العثور على عنوان IP. تأكد من تشغيل برنامج المعلم.";
-        }
-      })
-      .catch(() => {
-        document.body.innerHTML = "تعذر الاتصال بالوسيط. تحقق من الإنترنت.";
-      });
+    // إعادة توجيه كاملة (وليس fetch) لتجنب CORS
+    window.location.href = `${GAS_URL}?lab=${encodeURIComponent(lab)}`;
   } else {
     document.body.innerHTML = "معامل المختبر مفقود.";
   }
